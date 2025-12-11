@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultimate Zsh & Oh My Zsh Setup Guide</title>
     <style>
         :root {
+            /* Dark Theme (Default) */
             --bg-color: #0d1117;
             --card-bg: #161b22;
             --text-color: #e6edf3;
+            --text-secondary: #8b949e;
             --accent-color: #58a6ff;
             --accent-secondary: #7ee787;
             --code-bg: #0d1117;
@@ -18,13 +20,39 @@
             --warning-border: #d29922;
             --tip-bg: rgba(46, 160, 67, 0.1);
             --tip-border: #2ea043;
+            --hover-bg: rgba(88, 166, 255, 0.1);
+            --code-inline-bg: rgba(110, 118, 129, 0.2);
+            --kbd-border: #444c56;
             --mac-color: #f38ba8;
             --ubuntu-color: #fab387;
             --common-color: #89b4fa;
         }
 
+        [data-theme="light"] {
+            --bg-color: #ffffff;
+            --card-bg: #f6f8fa;
+            --text-color: #1f2328;
+            --text-secondary: #656d76;
+            --accent-color: #0969da;
+            --accent-secondary: #1a7f37;
+            --code-bg: #f6f8fa;
+            --code-text: #1a7f37;
+            --border-color: #d0d7de;
+            --warning-bg: rgba(210, 153, 34, 0.15);
+            --warning-border: #bf8700;
+            --tip-bg: rgba(46, 160, 67, 0.15);
+            --tip-border: #1a7f37;
+            --hover-bg: rgba(9, 105, 218, 0.1);
+            --code-inline-bg: rgba(175, 184, 193, 0.2);
+            --kbd-border: #d0d7de;
+            --mac-color: #cf222e;
+            --ubuntu-color: #bf8700;
+            --common-color: #0969da;
+        }
+
         * {
             box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
 
         body {
@@ -41,6 +69,49 @@
             margin: 0 auto;
         }
 
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--accent-color);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.1rem;
+        }
+
+        /* Back Link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            color: var(--accent-color);
+        }
+
         h1 {
             color: var(--accent-color);
             text-align: center;
@@ -50,7 +121,7 @@
 
         .subtitle {
             text-align: center;
-            color: #8b949e;
+            color: var(--text-secondary);
             margin-bottom: 40px;
             font-size: 1.1rem;
         }
@@ -86,7 +157,7 @@
 
         .mac {
             background-color: var(--mac-color);
-            color: #0d1117;
+            color: #ffffff;
         }
 
         .ubuntu {
@@ -96,11 +167,11 @@
 
         .common {
             background-color: var(--common-color);
-            color: #0d1117;
+            color: #ffffff;
         }
 
         code {
-            background-color: rgba(110, 118, 129, 0.2);
+            background-color: var(--code-inline-bg);
             padding: 3px 7px;
             border-radius: 6px;
             font-family: "SF Mono", "Menlo", "Consolas", monospace;
@@ -145,7 +216,7 @@
 
         .copy-btn:hover {
             background-color: var(--accent-color);
-            color: #0d1117;
+            color: #ffffff;
         }
 
         .note {
@@ -187,13 +258,20 @@
             border-radius: 4px;
             font-family: "SF Mono", monospace;
             font-size: 0.85em;
-            border: 1px solid #444c56;
+            border: 1px solid var(--kbd-border);
         }
     </style>
 </head>
 <body>
 
+<button class="theme-toggle" onclick="toggleTheme()">
+    <span class="icon" id="theme-icon">🌙</span>
+    <span id="theme-text">Dark</span>
+</button>
+
 <div class="container">
+    <a href="../" class="back-link">← Back to all guides</a>
+
     <h1>⚡ Ultimate Zsh Setup Guide</h1>
     <p class="subtitle">For iTerm2 (macOS) and Ubuntu Terminal</p>
 
@@ -244,6 +322,22 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
         
         <h3><span class="os-badge ubuntu">Ubuntu</span> Configure Terminal</h3>
         <p>Open Terminal Preferences, go to your profile, check "Custom Font", and select <code>MesloLGS NF</code>.</p>
+
+        <h3><span class="os-badge common">Both</span> Configure VS Code / Cursor</h3>
+        <p>The integrated terminal in VS Code and Cursor uses a different font setting. To fix broken icons:</p>
+        <ol>
+            <li>Open VS Code or Cursor</li>
+            <li>Press <kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (Mac) or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> (Windows/Linux)</li>
+            <li>Type <strong>"Open User Settings (JSON)"</strong> and select it</li>
+            <li>Add this line inside the JSON object:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>"terminal.integrated.fontFamily": "MesloLGS NF"</code></pre>
+            </li>
+            <li>Save the file and restart VS Code/Cursor</li>
+        </ol>
+        
+        <div class="tip">
+            <strong>💡 Quick Alternative:</strong> Press <kbd>⌘</kbd> + <kbd>,</kbd> to open Settings, search for <strong>"terminal font family"</strong>, and enter <code>MesloLGS NF</code>.
+        </div>
     </div>
 
     <!-- ==================== STEP 3 ==================== -->
@@ -328,6 +422,38 @@ alias ...="cd ../.."
 </div>
 
 <script>
+    // Theme Toggle Logic
+    function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeUI(newTheme);
+    }
+
+    function updateThemeUI(theme) {
+        const icon = document.getElementById('theme-icon');
+        const text = document.getElementById('theme-text');
+        
+        if (theme === 'dark') {
+            icon.textContent = '🌙';
+            text.textContent = 'Dark';
+        } else {
+            icon.textContent = '☀️';
+            text.textContent = 'Light';
+        }
+    }
+
+    // Load saved theme on page load
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeUI(savedTheme);
+    }
+
+    // Copy code function
     function copyCode(button) {
         const pre = button.parentElement;
         const code = pre.querySelector('code');
@@ -342,6 +468,8 @@ alias ...="cd ../.."
             }, 2000);
         });
     }
+
+    loadTheme();
 </script>
 
 </body>

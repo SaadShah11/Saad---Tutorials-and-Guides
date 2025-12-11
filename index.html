@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saad's Dev Tutorials</title>
+    <style>
+        :root {
+            /* Dark Theme (Default) */
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-color: #58a6ff;
+            --accent-secondary: #7ee787;
+            --border-color: #30363d;
+            --hover-bg: rgba(88, 166, 255, 0.1);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #ffffff;
+            --card-bg: #f6f8fa;
+            --text-color: #1f2328;
+            --text-secondary: #656d76;
+            --accent-color: #0969da;
+            --accent-secondary: #1a7f37;
+            --border-color: #d0d7de;
+            --hover-bg: rgba(9, 105, 218, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-top: 40px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--hover-bg);
+            border-color: var(--accent-color);
+        }
+
+        .theme-toggle .icon {
+            font-size: 1.1rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            color: var(--accent-color);
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        /* Guide Cards */
+        .guides-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .guide-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            text-decoration: none;
+            color: var(--text-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .guide-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-color);
+        }
+
+        .guide-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .guide-content h2 {
+            margin: 0 0 8px 0;
+            color: var(--accent-color);
+            font-size: 1.4rem;
+        }
+
+        .guide-content p {
+            margin: 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .guide-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background-color: var(--hover-bg);
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Back to top for subpages */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()">
+    <span class="icon" id="theme-icon">🌙</span>
+    <span id="theme-text">Dark</span>
+</button>
+
+<div class="container">
+    <div class="header">
+        <h1>📚 Dev Tutorials</h1>
+        <p>Personal setup guides and configurations</p>
+    </div>
+
+    <div class="guides-grid">
+        <a href="Mac%20Specific/" class="guide-card">
+            <span class="guide-icon">🍎</span>
+            <div class="guide-content">
+                <h2>Mac Setup Guide</h2>
+                <p>Essential apps, tools, and configurations for macOS including Homebrew installation and usage.</p>
+                <div class="guide-tags">
+                    <span class="tag">Homebrew</span>
+                    <span class="tag">CLI Tools</span>
+                    <span class="tag">Apps</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="Git%20setup/" class="guide-card">
+            <span class="guide-icon">🚀</span>
+            <div class="guide-content">
+                <h2>Multi-Account Git Guide</h2>
+                <p>Complete guide to managing multiple Git identities (personal & work) with SSH keys and config.</p>
+                <div class="guide-tags">
+                    <span class="tag">SSH Keys</span>
+                    <span class="tag">Git Config</span>
+                    <span class="tag">GitHub</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="Oh-My-Zsh/" class="guide-card">
+            <span class="guide-icon">⚡</span>
+            <div class="guide-content">
+                <h2>Zsh & Oh My Zsh Setup</h2>
+                <p>Terminal customization with Powerlevel10k theme, productivity plugins, and configurations.</p>
+                <div class="guide-tags">
+                    <span class="tag">Zsh</span>
+                    <span class="tag">Powerlevel10k</span>
+                    <span class="tag">Plugins</span>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="footer">
+        <p>Made for personal reference • <a href="https://github.com" target="_blank">View on GitHub</a></p>
+    </div>
+</div>
+
+<script>
+    // Theme Toggle Logic
+    function toggleTheme() {
+        const html = document.documentElement;
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeUI(newTheme);
+    }
+
+    function updateThemeUI(theme) {
+        const icon = document.getElementById('theme-icon');
+        const text = document.getElementById('theme-text');
+        
+        if (theme === 'dark') {
+            icon.textContent = '🌙';
+            text.textContent = 'Dark';
+        } else {
+            icon.textContent = '☀️';
+            text.textContent = 'Light';
+        }
+    }
+
+    // Load saved theme on page load
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeUI(savedTheme);
+    }
+
+    loadTheme();
+</script>
+
+</body>
+</html>
+
