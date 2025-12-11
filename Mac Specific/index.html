@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac Setup Guide - Apps & Tools</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #e6edf3;
+            --accent-color: #58a6ff;
+            --accent-secondary: #7ee787;
+            --code-bg: #0d1117;
+            --code-text: #7ee787;
+            --border-color: #30363d;
+            --warning-bg: rgba(210, 153, 34, 0.1);
+            --warning-border: #d29922;
+            --tip-bg: rgba(46, 160, 67, 0.1);
+            --tip-border: #2ea043;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8b949e;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--accent-secondary);
+            margin-top: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .toc {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        .toc li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .toc li:last-child {
+            border-bottom: none;
+        }
+
+        .toc a {
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toc a:hover {
+            color: var(--accent-color);
+        }
+
+        code {
+            background-color: rgba(110, 118, 129, 0.2);
+            padding: 3px 7px;
+            border-radius: 6px;
+            font-family: "SF Mono", "Menlo", "Consolas", monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: var(--code-text);
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--border-color);
+            color: var(--text-color);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background-color: var(--accent-color);
+            color: #0d1117;
+        }
+
+        .note {
+            background-color: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tip {
+            background-color: var(--tip-bg);
+            border-left: 4px solid var(--tip-border);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul, ol {
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .command-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .command-table th,
+        .command-table td {
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .command-table th {
+            background-color: rgba(88, 166, 255, 0.1);
+            color: var(--accent-color);
+        }
+
+        .command-table tr:hover {
+            background-color: rgba(110, 118, 129, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #0d1117;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+        }
+
+        kbd {
+            background-color: var(--border-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: "SF Mono", monospace;
+            font-size: 0.85em;
+            border: 1px solid #444c56;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🍎 Mac Setup Guide</h1>
+    <p class="subtitle">Essential apps, tools, and configurations for macOS</p>
+
+    <div class="toc">
+        <h3>📚 Table of Contents</h3>
+        <ul>
+            <li><a href="#homebrew"><span class="section-icon">🍺</span> Homebrew - The Package Manager</a></li>
+        </ul>
+    </div>
+
+    <!-- ==================== HOMEBREW SECTION ==================== -->
+    <div class="card" id="homebrew">
+        <h2>🍺 Homebrew - The Package Manager</h2>
+        <p>Homebrew is the essential package manager for macOS. It lets you install, update, and manage software from the command line with simple commands.</p>
+
+        <h3>Step 1: Install Homebrew</h3>
+        <p>Open <strong>Terminal</strong> (press <kbd>⌘</kbd> + <kbd>Space</kbd>, type "Terminal") and paste this command:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre>
+        
+        <div class="note">
+            <strong>⚠️ Note:</strong> You'll be prompted to enter your Mac password. The characters won't appear as you type—this is normal. Press Enter when done.
+        </div>
+
+        <h3>Step 2: Add Homebrew to Your PATH</h3>
+        <p>After installation, Homebrew will show you commands to add it to your PATH. For Apple Silicon Macs (M1/M2/M3), run:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"</code></pre>
+
+        <p>For Intel Macs, run:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/usr/local/bin/brew shellenv)"</code></pre>
+
+        <h3>Step 3: Verify Installation</h3>
+        <p>Close and reopen Terminal, then run:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>brew --version</code></pre>
+        <p>You should see something like: <code>Homebrew 4.x.x</code></p>
+
+        <div class="tip">
+            <strong>💡 Tip:</strong> Run <code>brew doctor</code> to check if your Homebrew installation is healthy and see any recommended fixes.
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📦 Essential Homebrew Commands</h2>
+        <p>Here are the commands you'll use most often:</p>
+
+        <table class="command-table">
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>brew install &lt;package&gt;</code></td>
+                    <td>Install a command-line tool (e.g., <code>brew install git</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>brew install --cask &lt;app&gt;</code></td>
+                    <td>Install a GUI application (e.g., <code>brew install --cask visual-studio-code</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>brew uninstall &lt;package&gt;</code></td>
+                    <td>Remove a package</td>
+                </tr>
+                <tr>
+                    <td><code>brew list</code></td>
+                    <td>Show all installed packages</td>
+                </tr>
+                <tr>
+                    <td><code>brew search &lt;term&gt;</code></td>
+                    <td>Search for available packages</td>
+                </tr>
+                <tr>
+                    <td><code>brew update</code></td>
+                    <td>Update Homebrew itself and package lists</td>
+                </tr>
+                <tr>
+                    <td><code>brew upgrade</code></td>
+                    <td>Upgrade all installed packages to latest versions</td>
+                </tr>
+                <tr>
+                    <td><code>brew upgrade &lt;package&gt;</code></td>
+                    <td>Upgrade a specific package</td>
+                </tr>
+                <tr>
+                    <td><code>brew outdated</code></td>
+                    <td>List packages that have updates available</td>
+                </tr>
+                <tr>
+                    <td><code>brew info &lt;package&gt;</code></td>
+                    <td>Show info about a package</td>
+                </tr>
+                <tr>
+                    <td><code>brew cleanup</code></td>
+                    <td>Remove old versions of packages to free up space</td>
+                </tr>
+                <tr>
+                    <td><code>brew doctor</code></td>
+                    <td>Check for potential problems with your installation</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>🚀 Installing Popular Apps with Homebrew</h2>
+        <p>Instead of downloading apps from websites, use Homebrew casks for easy installation and updates.</p>
+
+        <h3>Development Tools</h3>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Code Editors
+brew install --cask visual-studio-code
+brew install --cask cursor
+brew install --cask sublime-text
+
+# Terminals
+brew install --cask iterm2
+brew install --cask warp
+
+# Version Control
+brew install git
+brew install --cask github-desktop
+brew install --cask sourcetree
+
+# Containers & VMs
+brew install --cask docker
+brew install --cask orbstack</code></pre>
+
+        <h3>Productivity Apps</h3>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Browsers
+brew install --cask google-chrome
+brew install --cask firefox
+brew install --cask arc
+
+# Communication
+brew install --cask slack
+brew install --cask discord
+brew install --cask zoom
+
+# Utilities
+brew install --cask raycast          # Spotlight replacement
+brew install --cask rectangle        # Window management
+brew install --cask alt-tab          # Better app switcher
+brew install --cask the-unarchiver   # Extract archives
+brew install --cask appcleaner       # Completely remove apps</code></pre>
+
+        <h3>Command-Line Tools</h3>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Modern CLI replacements
+brew install eza          # Better ls (file listing)
+brew install bat          # Better cat (file viewing)
+brew install ripgrep      # Better grep (searching)
+brew install fd           # Better find (file finding)
+brew install fzf          # Fuzzy finder
+brew install tldr         # Simplified man pages
+brew install htop         # Better process viewer
+brew install tree         # Directory tree view
+brew install jq           # JSON processor
+brew install wget         # File downloader</code></pre>
+
+        <div class="tip">
+            <strong>💡 Pro Tip:</strong> After installing <code>eza</code>, you can add these aliases to your <code>~/.zshrc</code>:
+            <pre><code>alias ls="eza --icons"
+alias ll="eza -la --icons"
+alias lt="eza --tree --icons"</code></pre>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🔧 Maintaining Homebrew</h2>
+        <p>Keep your system clean and up-to-date with these maintenance commands:</p>
+
+        <h3>Regular Maintenance Routine</h3>
+        <p>Run this weekly to keep everything updated:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Update Homebrew and see what's outdated
+brew update
+
+# Show packages that need updating
+brew outdated
+
+# Upgrade all packages
+brew upgrade
+
+# Clean up old versions
+brew cleanup
+
+# Check for issues
+brew doctor</code></pre>
+
+        <h3>One-Liner for Quick Maintenance</h3>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>brew update && brew upgrade && brew cleanup</code></pre>
+
+        <div class="note">
+            <strong>⚠️ Note:</strong> Some cask apps (like Chrome) update themselves. Run <code>brew upgrade --greedy</code> to force-update all casks regardless of auto-update settings.
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📋 Export & Restore Your Setup</h2>
+        <p>Homebrew can create a "Brewfile" that lists all your installed packages, making it easy to set up a new Mac.</p>
+
+        <h3>Export Your Current Setup</h3>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Create a Brewfile in your home directory
+brew bundle dump --file=~/Brewfile
+
+# View what was exported
+cat ~/Brewfile</code></pre>
+
+        <h3>Restore on a New Mac</h3>
+        <p>Copy your Brewfile to the new Mac, then run:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Install everything from the Brewfile
+brew bundle --file=~/Brewfile</code></pre>
+
+        <div class="tip">
+            <strong>💡 Tip:</strong> Store your Brewfile in a Git repo (like a dotfiles repo) so you always have it backed up!
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>❓ Troubleshooting</h2>
+
+        <h3>Command Not Found After Install</h3>
+        <p>If you install something but the command isn't found:</p>
+        <ol>
+            <li>Close and reopen Terminal</li>
+            <li>Or run: <code>source ~/.zprofile</code></li>
+            <li>Check it's installed: <code>brew list | grep package-name</code></li>
+        </ol>
+
+        <h3>Permission Errors</h3>
+        <p>If you get permission errors, run:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>sudo chown -R $(whoami) $(brew --prefix)/*</code></pre>
+
+        <h3>Check Homebrew Health</h3>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>brew doctor</code></pre>
+        <p>This will identify and suggest fixes for common issues.</p>
+
+        <h3>Reinstall Homebrew</h3>
+        <p>If things are really broken, you can uninstall and reinstall:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Uninstall Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+
+# Then reinstall using Step 1 above</code></pre>
+    </div>
+
+</div>
+
+<script>
+    function copyCode(button) {
+        const pre = button.parentElement;
+        const code = pre.querySelector('code');
+        const text = code.innerText;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            button.textContent = 'Copied!';
+            button.style.backgroundColor = '#2ea043';
+            setTimeout(() => {
+                button.textContent = 'Copy';
+                button.style.backgroundColor = '';
+            }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
+

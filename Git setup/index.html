@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Account Git Guide</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #e6edf3;
+            --accent-color: #58a6ff;
+            --accent-secondary: #7ee787;
+            --code-bg: #0d1117;
+            --code-text: #7ee787;
+            --border-color: #30363d;
+            --warning-bg: rgba(248, 81, 73, 0.1);
+            --warning-border: #f85149;
+            --note-bg: rgba(210, 153, 34, 0.1);
+            --note-border: #d29922;
+            --tip-bg: rgba(46, 160, 67, 0.1);
+            --tip-border: #2ea043;
+            --mac-color: #f38ba8;
+            --windows-color: #89b4fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8b949e;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--accent-secondary);
+            margin-top: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .intro {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .intro p {
+            margin: 10px 0;
+        }
+
+        code {
+            background-color: rgba(110, 118, 129, 0.2);
+            padding: 3px 7px;
+            border-radius: 6px;
+            font-family: "SF Mono", "Menlo", "Consolas", monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: var(--code-text);
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--border-color);
+            color: var(--text-color);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background-color: var(--accent-color);
+            color: #0d1117;
+        }
+
+        .warning {
+            background-color: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .note {
+            background-color: var(--note-bg);
+            border-left: 4px solid var(--note-border);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tip {
+            background-color: var(--tip-bg);
+            border-left: 4px solid var(--tip-border);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul, ol {
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .os-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            margin-right: 8px;
+        }
+
+        .mac {
+            background-color: var(--mac-color);
+            color: #0d1117;
+        }
+
+        .windows {
+            background-color: var(--windows-color);
+            color: #0d1117;
+        }
+
+        .common {
+            background-color: var(--accent-secondary);
+            color: #0d1117;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 40px 0;
+        }
+
+        kbd {
+            background-color: var(--border-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: "SF Mono", monospace;
+            font-size: 0.85em;
+            border: 1px solid #444c56;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 Multi-Account Git Guide</h1>
+    <p class="subtitle">A complete guide to managing multiple Git identities</p>
+
+    <div class="intro">
+        <p>This document walks you through the entire process of setting up your computer to handle multiple Git identities (e.g., a "personal" and "work" account) without them conflicting.</p>
+
+        <p>The setup is broken into two key concepts:</p>
+        <ol>
+            <li><strong>Authentication (SSH Keys):</strong> This proves <em>who you are</em> to the Git server (like GitHub or GitLab). It controls your permission to <code>push</code> and <code>pull</code> code.</li>
+            <li><strong>Authorship (Git Config):</strong> This is the <code>user.name</code> and <code>user.email</code> metadata that gets stamped on your commits. It controls the "author" name that appears in the Git log.</li>
+        </ol>
+        <p>We will configure your system so you never accidentally push work code from your personal account or vice-versa.</p>
+    </div>
+
+    <!-- ==================== PART 0 ==================== -->
+    <div class="card">
+        <h2>🧹 Part 0: Starting From a Clean Slate (Optional)</h2>
+
+        <p>These steps will back up and remove your current global Git and SSH configurations. This is for users who want a completely fresh start.</p>
+
+        <div class="warning">
+            <p><strong>⚠️ Warning: This is a destructive operation.</strong></p>
+            <p>It will back up your old keys but will immediately revoke your computer's access to all remote servers until you complete the new setup.</p>
+        </div>
+
+        <h3><span class="os-badge mac">macOS / Linux</span></h3>
+        <ol>
+            <li>Open <strong>Terminal</strong>.</li>
+            <li>Clear any loaded SSH keys from the agent:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh-add -D</code></pre>
+            </li>
+            <li>Back up and rename your existing SSH and Git config folders:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Back up SSH
+if [ -d ~/.ssh ]; then
+  mv ~/.ssh ~/.ssh_backup
+  echo "Backed up old SSH config to ~/.ssh_backup"
+fi
+
+# Back up Git Config
+if [ -f ~/.gitconfig ]; then
+  mv ~/.gitconfig ~/.gitconfig_backup
+  echo "Backed up old Git config to ~/.gitconfig_backup"
+fi</code></pre>
+            </li>
+            <li>Create a new, empty SSH directory with the correct permissions:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>mkdir ~/.ssh
+chmod 700 ~/.ssh</code></pre>
+            </li>
+        </ol>
+
+        <h3><span class="os-badge windows">Windows</span></h3>
+        <ol>
+            <li>Open <strong>PowerShell</strong>.</li>
+            <li>Stop the ssh-agent and clear any loaded keys:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh-add -D
+Stop-Service ssh-agent</code></pre>
+            </li>
+            <li>Back up and rename your existing SSH and Git config folders:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Back up SSH (using $env:USERPROFILE, which is like ~)
+if (Test-Path $env:USERPROFILE\.ssh) {
+  Move-Item $env:USERPROFILE\.ssh $env:USERPROFILE\.ssh_backup
+  Write-Host "Backed up old SSH config to .ssh_backup"
+}
+
+# Back up Git Config
+if (Test-Path $env:USERPROFILE\.gitconfig) {
+  Move-Item $env:USERPROFILE\.gitconfig $env:USERPROFILE\.gitconfig_backup
+  Write-Host "Backed up old Git config to .gitconfig_backup"
+}</code></pre>
+            </li>
+            <li>Create a new, empty SSH directory:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>mkdir $env:USERPROFILE\.ssh</code></pre>
+            </li>
+        </ol>
+    </div>
+
+    <!-- ==================== PART 1 ==================== -->
+    <div class="card">
+        <h2>🔑 Part 1: Setting Up SSH Keys (Authentication)</h2>
+        <p>We will create a separate SSH key for each identity.</p>
+
+        <h3><span class="os-badge mac">macOS / Linux</span></h3>
+        <ol>
+            <li><strong>Generate Keys:</strong> Open <strong>Terminal</strong> and run these commands.
+                <ul>
+                    <li><strong>Personal Key:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh-keygen -t ed25519 -C "your-personal-email@gmail.com" -f ~/.ssh/id_ed25519_personal</code></pre>
+                    </li>
+                    <li><strong>Work Key:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh-keygen -t ed25519 -C "your-work-email@company.com" -f ~/.ssh/id_ed25519_work</code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Add Keys to ssh-agent:</strong> This securely stores your keys in the macOS Keychain.
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh-add --apple-use-keychain ~/.ssh/id_ed25519_personal
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519_work</code></pre>
+            </li>
+            <li><strong>Create SSH Config File:</strong>
+                <ul>
+                    <li>Create and open the file: <code>nano ~/.ssh/config</code></li>
+                    <li>Paste the following content. These <code>Host</code> names are <em>aliases</em> (nicknames) you will use later.
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># --- Personal Account (e.g., GitHub) ---
+Host github.com-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_personal
+    IdentitiesOnly yes
+
+# --- Work Account (e.g., GitHub) ---
+Host github.com-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_work
+    IdentitiesOnly yes
+    
+# --- Work Account (e.g., GitLab) ---
+# Host gitlab.com-work
+#     HostName gitlab.com
+#     User git
+#     IdentityFile ~/.ssh/id_ed25519_work
+#     IdentitiesOnly yes</code></pre>
+                    </li>
+                    <li>Save and exit <code>nano</code> (<kbd>Control</kbd>+<kbd>O</kbd>, <kbd>Enter</kbd>, <kbd>Control</kbd>+<kbd>X</kbd>).</li>
+                    <li>Set permissions for the file: <code>chmod 600 ~/.ssh/config</code></li>
+                </ul>
+            </li>
+            <li><strong>Add Public Keys to Git Providers:</strong>
+                <ul>
+                    <li><strong>Copy Personal Key:</strong> <code>pbcopy &lt; ~/.ssh/id_ed25519_personal.pub</code>
+                        <br>Go to your <strong>personal</strong> GitHub/GitLab account <strong>Settings &gt; SSH and GPG keys &gt; New SSH key</strong> and paste it.
+                    </li>
+                    <li><strong>Copy Work Key:</strong> <code>pbcopy &lt; ~/.ssh/id_ed25519_work.pub</code>
+                        <br>Go to your <strong>work</strong> GitHub/GitLab account <strong>Settings &gt; SSH and GPG keys &gt; New SSH key</strong> and paste it.
+                    </li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3><span class="os-badge windows">Windows (10/11)</span></h3>
+        <ol>
+            <li><strong>Start the OpenSSH Agent:</strong> Open <strong>PowerShell as an Administrator</strong>.
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Set the service to start automatically
+Set-Service -Name ssh-agent -StartupType Automatic
+
+# Start the service
+Start-Service ssh-agent</code></pre>
+            </li>
+            <li><strong>Generate Keys:</strong> Open a regular <strong>PowerShell</strong> window.
+                <ul>
+                    <li><strong>Personal Key:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh-keygen -t ed25519 -C "your-personal-email@gmail.com" -f "$HOME\.ssh\id_ed25519_personal"</code></pre>
+                    </li>
+                    <li><strong>Work Key:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh-keygen -t ed25519 -C "your-work-email@company.com" -f "$HOME\.ssh\id_ed25519_work"</code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Add Keys to ssh-agent:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh-add "$HOME\.ssh\id_ed25519_personal"
+ssh-add "$HOME\.ssh\id_ed25519_work"</code></pre>
+            </li>
+            <li><strong>Create SSH Config File:</strong>
+                <ul>
+                    <li>First, create an empty config file (without an extension):
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>New-Item -Path $HOME\.ssh\config -ItemType File -Force</code></pre>
+                    </li>
+                    <li>Then open it in Notepad:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>notepad $HOME\.ssh\config</code></pre>
+                        <strong>Important:</strong> If Notepad asks to create the file, click <strong>Yes</strong>. When saving, make sure to select <strong>"All Files (*.*)"</strong> in the "Save as type" dropdown to prevent Notepad from adding a <code>.txt</code> extension.
+                    </li>
+                    <li>Paste the <em>exact same content</em> as in the macOS step:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># --- Personal Account (e.g., GitHub) ---
+Host github.com-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_personal
+    IdentitiesOnly yes
+
+# --- Work Account (e.g., GitHub) ---
+Host github.com-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_work
+    IdentitiesOnly yes</code></pre>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>Add Public Keys to Git Providers:</strong>
+                <ul>
+                    <li><strong>Copy Personal Key:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>Get-Content $HOME\.ssh\id_ed25519_personal.pub | Set-Clipboard</code></pre>
+                        Go to your <strong>personal</strong> GitHub/GitLab account and paste it.
+                    </li>
+                    <li><strong>Copy Work Key:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>Get-Content $HOME\.ssh\id_ed25519_work.pub | Set-Clipboard</code></pre>
+                        Go to your <strong>work</strong> GitHub/GitLab account and paste it.
+                    </li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <!-- ==================== PART 2 ==================== -->
+    <div class="card">
+        <h2>📝 Part 2: Setting Up Git Config (Authorship)</h2>
+        <p>This part is <strong>identical for both Windows and macOS</strong>.</p>
+
+        <h3>Method A: The "Safety Net" (Per-Project Config)</h3>
+        <p>This is the method you are currently using. By not having a global <code>~/.gitconfig</code> file, Git will <strong>force</strong> you to set your identity for every new repository.</p>
+        <ul>
+            <li>After you <code>git clone</code> or <code>git init</code> a project, <code>cd</code> into it.</li>
+            <li>If it's a <strong>personal</strong> project, run:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git config user.name "Your Personal Name"
+git config user.email "your-personal-email@gmail.com"</code></pre>
+            </li>
+            <li>If it's a <strong>work</strong> project, run:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git config user.name "Your Work Name"
+git config user.email "your-work-email@company.com"</code></pre>
+            </li>
+        </ul>
+
+        <h3>Method B: The Automatic <code>includeIf</code> (Recommended)</h3>
+        <ol>
+            <li><strong>Organize your projects</strong> into folders (e.g., <code>~/Projects/Personal</code> and <code>~/Projects/Work</code>).</li>
+            <li><strong>Set your *default* identity</strong> as the global one:
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git config --global user.name "Your Personal Name"
+git config --global user.email "your-personal-email@gmail.com"</code></pre>
+            </li>
+            <li><strong>Create a separate config file</strong> for your work identity (e.g., <code>~/.gitconfig-work</code>).
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>[user]
+    name = Your Work Name
+    email = your-work-email@company.com</code></pre>
+            </li>
+            <li><strong>Edit your main <code>~/.gitconfig</code></strong> to automatically include the work config.
+                <br><span class="os-badge mac">macOS / Linux</span>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>[includeIf "gitdir:~/Projects/Work/"]
+    path = ~/.gitconfig-work</code></pre>
+                <span class="os-badge windows">Windows</span> (Note: Git config *always* uses forward slashes <code>/</code>)
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>[includeIf "gitdir:C:/Users/YourUserName/Projects/Work/"]
+    path = .gitconfig-work</code></pre>
+            </li>
+        </ol>
+    </div>
+
+    <!-- ==================== PART 3 ==================== -->
+    <div class="card">
+        <h2>⚡ Part 3: How to Use Your New Setup (The Workflow)</h2>
+        <p>This is how you use the SSH aliases you created in <code>Part 1</code>.</p>
+
+        <h3>Cloning a New Repository</h3>
+        <p>You <strong>must</strong> modify the <code>git clone</code> command to use your new host alias.</p>
+        <ol>
+            <li>Go to GitHub/GitLab and get the <strong>SSH</strong> clone URL: <code>git@github.com:user/repo.git</code></li>
+            <li><strong>Manually change</strong> <code>github.com</code> to match your alias.</li>
+        </ol>
+        <ul>
+            <li><strong>To clone a PERSONAL repo:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git clone git@github.com-personal:user/repo.git</code></pre>
+            </li>
+            <li><strong>To clone a WORK repo:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git clone git@github.com-work:user/repo.git</code></pre>
+            </li>
+        </ul>
+
+        <h3>Updating an Existing Repository</h3>
+        <p>For any projects you already have, you need to update their "remote" URL.</p>
+        <ol>
+            <li><code>cd</code> into your project.</li>
+            <li>Check your current remote: <code>git remote -v</code></li>
+            <li>Update the URL to use your alias.
+                <ul>
+                    <li><strong>For a personal repo:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git remote set-url origin git@github.com-personal:user/repo.git</code></pre>
+                    </li>
+                    <li><strong>For a work repo:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git remote set-url origin git@github.com-work:user/repo.git</code></pre>
+                    </li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <!-- ==================== PART 4 ==================== -->
+    <div class="card">
+        <h2>🔧 Part 4: Testing & Troubleshooting</h2>
+
+        <h3>How to Test Your SSH Connection</h3>
+        <p>You can directly test your aliases to see which account they are connecting to.</p>
+        <ul>
+            <li><strong>Test Personal Account:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh -T git@github.com-personal</code></pre>
+                <strong>Success:</strong> <code>Hi &lt;your-personal-username&gt;! You've successfully authenticated...</code>
+            </li>
+            <li><strong>Test Work Account:</strong>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>ssh -T git@github.com-work</code></pre>
+                <strong>Success:</strong> <code>Hi &lt;your-work-username&gt;! You've successfully authenticated...</code>
+            </li>
+        </ul>
+
+        <h3>Common Error: <code>Permission denied (publickey)</code></h3>
+        <p>This was the error you faced:</p>
+        <pre><code>git@github.com: Permission denied (publickey).
+fatal: Could not read from remote repository.</code></pre>
+        <p>This error almost always means you are using the <strong>wrong URL</strong>. You tried to clone using the default <code>git@github.com</code> address, which your <code>~/.ssh/config</code> file does not have a special rule for.</p>
+        
+        <div class="tip">
+            <strong>💡 The Fix:</strong> You <strong>must</strong> use your host alias (e.g., <code>github.com-personal</code> or <code>github.com-work</code>) in your remote URL. Follow the steps in <strong>Part 3</strong>.
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function copyCode(button) {
+        const pre = button.parentElement;
+        const code = pre.querySelector('code');
+        const text = code.innerText;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            button.textContent = 'Copied!';
+            button.style.backgroundColor = '#2ea043';
+            setTimeout(() => {
+                button.textContent = 'Copy';
+                button.style.backgroundColor = '';
+            }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>

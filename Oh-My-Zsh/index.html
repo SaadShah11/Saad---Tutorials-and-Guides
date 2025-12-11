@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Zsh & Oh My Zsh Setup Guide</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #e6edf3;
+            --accent-color: #58a6ff;
+            --accent-secondary: #7ee787;
+            --code-bg: #0d1117;
+            --code-text: #7ee787;
+            --border-color: #30363d;
+            --warning-bg: rgba(210, 153, 34, 0.1);
+            --warning-border: #d29922;
+            --tip-bg: rgba(46, 160, 67, 0.1);
+            --tip-border: #2ea043;
+            --mac-color: #f38ba8;
+            --ubuntu-color: #fab387;
+            --common-color: #89b4fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--accent-color);
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8b949e;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h3 {
+            color: var(--accent-secondary);
+            margin-top: 25px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .os-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            margin-right: 8px;
+        }
+
+        .mac {
+            background-color: var(--mac-color);
+            color: #0d1117;
+        }
+
+        .ubuntu {
+            background-color: var(--ubuntu-color);
+            color: #0d1117;
+        }
+
+        .common {
+            background-color: var(--common-color);
+            color: #0d1117;
+        }
+
+        code {
+            background-color: rgba(110, 118, 129, 0.2);
+            padding: 3px 7px;
+            border-radius: 6px;
+            font-family: "SF Mono", "Menlo", "Consolas", monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+            color: var(--code-text);
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--border-color);
+            color: var(--text-color);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        pre:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background-color: var(--accent-color);
+            color: #0d1117;
+        }
+
+        .note {
+            background-color: var(--warning-bg);
+            border-left: 4px solid var(--warning-border);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tip {
+            background-color: var(--tip-bg);
+            border-left: 4px solid var(--tip-border);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul, ol {
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        kbd {
+            background-color: var(--border-color);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: "SF Mono", monospace;
+            font-size: 0.85em;
+            border: 1px solid #444c56;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>⚡ Ultimate Zsh Setup Guide</h1>
+    <p class="subtitle">For iTerm2 (macOS) and Ubuntu Terminal</p>
+
+    <!-- ==================== STEP 1 ==================== -->
+    <div class="card">
+        <h2>1. Install Zsh & Oh My Zsh</h2>
+        
+        <h3><span class="os-badge mac">Mac</span></h3>
+        <p>Ensure you have Homebrew installed. Zsh is usually default on modern Macs, but it's good to update.</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>brew install zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code></pre>
+
+        <h3><span class="os-badge ubuntu">Ubuntu</span></h3>
+        <p>Install Zsh and set it as default.</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>sudo apt update
+sudo apt install zsh -y
+chsh -s $(which zsh)
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"</code></pre>
+        
+        <div class="note"><strong>⚠️ Note:</strong> You may need to log out and log back in for the default shell change to take effect.</div>
+    </div>
+
+    <!-- ==================== STEP 2 ==================== -->
+    <div class="card">
+        <h2>2. Install Theme (Powerlevel10k)</h2>
+        <p>This theme provides the "Git Branch" visuals and icons. It requires a specific font to look correct.</p>
+        
+        <h3><span class="os-badge common">Both</span> Install the Theme</h3>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k</code></pre>
+
+        <h3><span class="os-badge common">Both</span> Install Fonts (Crucial!)</h3>
+        <p>Download and install <strong>MesloLGS NF</strong> fonts. The theme will look broken without them.</p>
+        <ol>
+            <li>Download these four files:
+                <ul>
+                    <li><a href="https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf" target="_blank">MesloLGS NF Regular.ttf</a></li>
+                    <li><a href="https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf" target="_blank">MesloLGS NF Bold.ttf</a></li>
+                    <li><a href="https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf" target="_blank">MesloLGS NF Italic.ttf</a></li>
+                    <li><a href="https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf" target="_blank">MesloLGS NF Bold Italic.ttf</a></li>
+                </ul>
+            </li>
+            <li><span class="os-badge mac">Mac</span> Double-click each file and click "Install Font".</li>
+            <li><span class="os-badge ubuntu">Ubuntu</span> Move files to <code>~/.local/share/fonts</code> and run <code>fc-cache -fv</code>.</li>
+        </ol>
+
+        <h3><span class="os-badge mac">Mac</span> Configure iTerm2</h3>
+        <p>Go to <strong>iTerm2 > Preferences > Profiles > Text</strong> and change <strong>Font</strong> to <code>MesloLGS NF</code>.</p>
+        
+        <h3><span class="os-badge ubuntu">Ubuntu</span> Configure Terminal</h3>
+        <p>Open Terminal Preferences, go to your profile, check "Custom Font", and select <code>MesloLGS NF</code>.</p>
+    </div>
+
+    <!-- ==================== STEP 3 ==================== -->
+    <div class="card">
+        <h2>3. Install Productivity Plugins</h2>
+        <p><strong>Autosuggestions:</strong> Suggests commands as you type based on history (press right arrow to accept).<br>
+        <strong>Syntax Highlighting:</strong> Colors commands green (valid) or red (invalid).</p>
+
+        <h3><span class="os-badge common">Both</span> Run these commands:</h3>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting</code></pre>
+    </div>
+
+    <!-- ==================== STEP 4 ==================== -->
+    <div class="card">
+        <h2>4. The Configuration File (.zshrc)</h2>
+        <p>Replace the content of your <code>~/.zshrc</code> file with the configuration below. You can edit it by running <code>nano ~/.zshrc</code>.</p>
+        
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Enable Powerlevel10k Instant Prompt
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load.
+# Powerlevel10k provides the git status, icons, and speed.
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+plugins=(
+    git
+    zsh-autosuggestions
+    zsh-syntax-highlighting
+    web-search       # Allows typing "google something"
+    copypath         # Copies current folder path
+    copyfile         # Copies file content
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nano'
+fi
+
+# Aliases - Productivity shortcuts
+alias zshconfig="nano ~/.zshrc"
+alias ohmyzsh="nano ~/.oh-my-zsh"
+alias c="clear"
+alias ..="cd .."
+alias ...="cd ../.."
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh</code></pre>
+    </div>
+
+    <!-- ==================== STEP 5 ==================== -->
+    <div class="card">
+        <h2>5. Finalize Setup</h2>
+        <ol>
+            <li>Restart your terminal (close and open iTerm2/Terminal).</li>
+            <li>You should see the <strong>Powerlevel10k configuration wizard</strong> start automatically.</li>
+            <li>If it doesn't start, type: <code>p10k configure</code></li>
+            <li>Follow the on-screen prompts to choose your preferred style (Rainbow, Lean, etc.) and time format.</li>
+            <li><strong>Enjoy!</strong> Type a command you used before to see the grey autosuggestion, then press <kbd>→</kbd> (Right Arrow) to complete it.</li>
+        </ol>
+
+        <div class="tip">
+            <strong>💡 Tip:</strong> You can re-run <code>p10k configure</code> anytime to change your prompt style!
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function copyCode(button) {
+        const pre = button.parentElement;
+        const code = pre.querySelector('code');
+        const text = code.innerText;
+        
+        navigator.clipboard.writeText(text).then(() => {
+            button.textContent = 'Copied!';
+            button.style.backgroundColor = '#2ea043';
+            setTimeout(() => {
+                button.textContent = 'Copy';
+                button.style.backgroundColor = '';
+            }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
