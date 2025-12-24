@@ -323,6 +323,7 @@
         <h3>📚 Table of Contents</h3>
         <ul>
             <li><a href="#homebrew"><span class="section-icon">🍺</span> Homebrew - The Package Manager</a></li>
+            <li><a href="#nvm"><span class="section-icon">📦</span> NVM - Node Version Manager</a></li>
         </ul>
     </div>
 
@@ -559,6 +560,219 @@ brew bundle --file=~/Brewfile</code></pre>
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
 
 # Then reinstall using Step 1 above</code></pre>
+    </div>
+
+    <!-- ==================== NVM SECTION ==================== -->
+    <div class="card" id="nvm">
+        <h2>📦 NVM - Node Version Manager</h2>
+        <p>NVM (Node Version Manager) allows you to install and manage multiple versions of Node.js on your Mac. This is essential for working on different projects that may require different Node.js versions.</p>
+
+        <div class="note">
+            <strong>⚠️ Prerequisite:</strong> Make sure you have Homebrew installed first (see the Homebrew section above).
+        </div>
+
+        <h3>Step 1: Install NVM via Homebrew</h3>
+        <p>Install NVM using Homebrew:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>brew install nvm</code></pre>
+
+        <h3>Step 2: Create NVM Directory</h3>
+        <p>Create the directory where NVM will store Node.js versions:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>mkdir ~/.nvm</code></pre>
+
+        <h3>Step 3: Add NVM to Your Shell Profile</h3>
+        <p>Add NVM configuration to your <code>~/.zshrc</code> file. This ensures NVM is loaded every time you open a new terminal:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>export NVM_DIR="$HOME/.nvm"
+[ -s "$(brew --prefix nvm)/nvm.sh" ] && \. "$(brew --prefix nvm)/nvm.sh"
+[ -s "$(brew --prefix nvm)/etc/bash_completion" ] && \. "$(brew --prefix nvm)/etc/bash_completion"</code></pre>
+
+        <p>Or run this command to append it automatically to your <code>~/.zshrc</code>:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>echo 'export NVM_DIR="$HOME/.nvm"
+[ -s "$(brew --prefix nvm)/nvm.sh" ] && \. "$(brew --prefix nvm)/nvm.sh"
+[ -s "$(brew --prefix nvm)/etc/bash_completion" ] && \. "$(brew --prefix nvm)/etc/bash_completion"' >> ~/.zshrc</code></pre>
+
+        <div class="tip">
+            <strong>💡 Tip:</strong> The <code>$(brew --prefix nvm)</code> command automatically finds the Homebrew installation path for NVM, so you don't need to hardcode paths.
+        </div>
+
+        <h3>Step 4: Reload Your Shell</h3>
+        <p>Close and reopen Terminal, or run:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>source ~/.zshrc</code></pre>
+
+        <h3>Step 5: Verify Installation</h3>
+        <p>Check that NVM is installed correctly:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>nvm --version</code></pre>
+        <p>You should see something like: <code>0.39.7</code> (version may vary)</p>
+    </div>
+
+    <div class="card">
+        <h2>🚀 Essential NVM Commands</h2>
+        <p>Here are the most commonly used NVM commands:</p>
+
+        <table class="command-table">
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>nvm install node</code></td>
+                    <td>Install the latest LTS version of Node.js</td>
+                </tr>
+                <tr>
+                    <td><code>nvm install &lt;version&gt;</code></td>
+                    <td>Install a specific Node.js version (e.g., <code>nvm install 20.10.0</code>)</td>
+                </tr>
+                <tr>
+                    <td><code>nvm install --lts</code></td>
+                    <td>Install the latest LTS (Long Term Support) version</td>
+                </tr>
+                <tr>
+                    <td><code>nvm use &lt;version&gt;</code></td>
+                    <td>Switch to a specific Node.js version</td>
+                </tr>
+                <tr>
+                    <td><code>nvm use node</code></td>
+                    <td>Switch to the latest installed version</td>
+                </tr>
+                <tr>
+                    <td><code>nvm use --lts</code></td>
+                    <td>Switch to the latest LTS version</td>
+                </tr>
+                <tr>
+                    <td><code>nvm list</code></td>
+                    <td>List all installed Node.js versions</td>
+                </tr>
+                <tr>
+                    <td><code>nvm list-remote</code></td>
+                    <td>List all available Node.js versions to install</td>
+                </tr>
+                <tr>
+                    <td><code>nvm list-remote --lts</code></td>
+                    <td>List only LTS versions available to install</td>
+                </tr>
+                <tr>
+                    <td><code>nvm current</code></td>
+                    <td>Show the currently active Node.js version</td>
+                </tr>
+                <tr>
+                    <td><code>nvm alias default &lt;version&gt;</code></td>
+                    <td>Set a default Node.js version for new terminal sessions</td>
+                </tr>
+                <tr>
+                    <td><code>nvm uninstall &lt;version&gt;</code></td>
+                    <td>Uninstall a specific Node.js version</td>
+                </tr>
+                <tr>
+                    <td><code>nvm which &lt;version&gt;</code></td>
+                    <td>Show the path to the Node.js executable for a version</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2>💡 Common NVM Workflows</h2>
+        
+        <h3>Installing and Using Node.js</h3>
+        <p>Install the latest LTS version and use it:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Install latest LTS
+nvm install --lts
+
+# Use it
+nvm use --lts
+
+# Set it as default
+nvm alias default node</code></pre>
+
+        <h3>Working with Multiple Projects</h3>
+        <p>Different projects may require different Node.js versions. Here's how to manage that:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Install multiple versions
+nvm install 18.20.0
+nvm install 20.10.0
+nvm install 22.0.0
+
+# Switch between them as needed
+nvm use 18.20.0  # For project A
+nvm use 20.10.0  # For project B</code></pre>
+
+        <h3>Using .nvmrc Files</h3>
+        <p>Create a <code>.nvmrc</code> file in your project root to automatically use the correct Node.js version:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># In your project directory, create .nvmrc
+echo "20.10.0" > .nvmrc
+
+# Then use it
+nvm use</code></pre>
+        
+        <div class="tip">
+            <strong>💡 Pro Tip:</strong> Add this to your <code>~/.zshrc</code> to automatically switch Node versions when entering a directory with a <code>.nvmrc</code> file:
+            <pre><code># Auto-switch Node version when .nvmrc exists
+autoload -U add-zsh-hook
+load-nvmrc() {
+  local node_version="$(nvm version)"
+  local nvmrc_path="$(nvm_find_nvmrc)"
+
+  if [ -n "$nvmrc_path" ]; then
+    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+    if [ "$nvmrc_node_version" = "N/A" ]; then
+      nvm install
+    elif [ "$nvmrc_node_version" != "$node_version" ]; then
+      nvm use
+    fi
+  elif [ "$node_version" != "$(nvm version default)" ]; then
+    echo "Reverting to nvm default version"
+    nvm use default
+  fi
+}
+add-zsh-hook chpwd load-nvmrc
+load-nvmrc</code></pre>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🔧 NVM Troubleshooting</h2>
+
+        <h3>NVM Command Not Found</h3>
+        <p>If you get <code>nvm: command not found</code> after installation:</p>
+        <ol>
+            <li>Make sure you've created the <code>~/.nvm</code> directory: <code>mkdir ~/.nvm</code></li>
+            <li>Verify you've added the NVM configuration to your <code>~/.zshrc</code> (see Step 3)</li>
+            <li>Check that the paths use <code>$(brew --prefix nvm)</code> instead of hardcoded paths</li>
+            <li>Reload your shell: <code>source ~/.zshrc</code></li>
+            <li>Close and reopen Terminal</li>
+            <li>Verify NVM is installed via Homebrew: <code>brew list nvm</code></li>
+        </ol>
+
+        <h3>Node Version Not Persisting</h3>
+        <p>If your Node.js version resets after closing Terminal:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Set a default version
+nvm alias default 20.10.0
+
+# Verify it's set
+nvm list</code></pre>
+
+        <h3>Permission Errors</h3>
+        <p>If you encounter permission errors, make sure NVM directory has correct permissions:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>sudo chown -R $(whoami) ~/.nvm</code></pre>
+
+        <h3>Check NVM Installation</h3>
+        <p>Verify NVM is properly installed and configured:</p>
+        <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code># Check if NVM is installed via Homebrew
+brew list nvm
+
+# Check NVM version
+nvm --version
+
+# Check NVM directory
+echo $NVM_DIR
+
+# Check Homebrew NVM path
+brew --prefix nvm
+
+# List installed Node versions
+nvm list</code></pre>
     </div>
 
 </div>
